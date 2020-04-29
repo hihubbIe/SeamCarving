@@ -94,13 +94,16 @@ public class SeamCarving
 
 				// If pixel is bottom of a row, add edge from pixel to graph end with cost
 				if(j == height - 1) graph.addEdge(new Edge(id, graphSize-1, itr[i][j]));
-				else graph.addEdge(new Edge(id, ((i) * width + (j + 1) + 1), itr[i][j]));
+				else
+				{
+					graph.addEdge(new Edge(id, ((i) * width + (j + 1) + 1), itr[i][j]));
 
-				// If pixel isn't in the left column, add edge to bottom left pixel
-				if(i > 0) graph.addEdge(new Edge(id, ((i - 1) * width + (j + 1) + 1), itr[i][j]));
+					// If pixel isn't in the left column, add edge to bottom left pixel
+					if(i > 0) graph.addEdge(new Edge(id, ((i - 1) * width + (j + 1) + 1), itr[i][j]));
 
-				// If pixel isn't in the left column, add edge to bottom left pixel
-				if(i < width - 1) graph.addEdge(new Edge(id, ((i + 1) * width + (j + 1) + 1), itr[i][j]));
+					// If pixel isn't in the left column, add edge to bottom left pixel
+					if(i < width - 1) graph.addEdge(new Edge(id, ((i + 1) * width + (j + 1) + 1), itr[i][j]));
+				}
 			}
 		}
 
