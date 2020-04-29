@@ -87,9 +87,9 @@ public class SeamCarving
 		int width = itr[0].length;
 		GraphArrayList graph = new GraphArrayList(graphSize);
 
-		for(int x = 0; x < width; x++)
+		for(int y = 0; y < height; y++)
 		{
-			for(int y = 0; y < height; y++)
+			for(int x = 0; x < width; x++)
 			{
 				// Calculate pixel ID
 				int id = getID(x, y, width);

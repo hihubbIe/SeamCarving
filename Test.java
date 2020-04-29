@@ -1,3 +1,5 @@
+import static java.lang.System.currentTimeMillis;
+
 class Test
 {
    static boolean visite[];
@@ -36,12 +38,14 @@ class Test
    public static void main(String[] args)
 	 {
 		//testGraph();
-		 int[][] img = {{3, 11, 24, 39},{8, 21, 29, 39},{200, 60, 25, 0}};
+		 int[][] img = SeamCarving.readpgm("resources/ex1.pgm");
 
 		 int[][] itr = SeamCarving.interest(img);
 
+		 long ms = currentTimeMillis();
+
 		 Graph g = SeamCarving.toGraph(itr);
 
-		 g. writeFile("f.txt");
+		 System.out.println(currentTimeMillis() - ms + "ms");
 	 }
 }
