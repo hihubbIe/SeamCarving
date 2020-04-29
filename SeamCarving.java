@@ -96,5 +96,7 @@ public class SeamCarving
 
 			}
 		}
+
+		return graph;
 	}
 }
