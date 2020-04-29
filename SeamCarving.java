@@ -77,23 +77,30 @@ public class SeamCarving
 
 	public static Graph toGraph(int[][] itr)
 	{
-		int graphSize = itr.length * itr[0].length + 2;
+		int graphSize = itr.length * itr[0].length + 2; // Size = array size + src + dest points
 		int width = itr.length;
 		int height = itr[0].length;
 		GraphArrayList graph = new GraphArrayList(graphSize);
 
-		for(int i = 0; i < itr.length; i++)
+		for(int i = 0; i < width; i++)
 		{
-			for(int j = 0; j < itr[i].length; j++)
+			for(int j = 0; j < height; j++)
 			{
-				int id = i * itr.length + j;
+				// Calculate pixel ID
+				int id = i * width + j + 1;
 
-				if(j == 0) graph.addEdge(new Edge(0, id, itr[i][j]));
-				else
+				// If pixel is top of a row, add edge from 0 to current with cost 0
+				if(j == 0) graph.addEdge(new Edge(0, id, 0));
 
-				if(j == itr[i].length - 1) graph.addEdge(new Edge(id, graphSize-1, itr[i][j]));
+				// If pixel is bottom of a row, add edge from pixel to graph end with cost
+				if(j == height - 1) graph.addEdge(new Edge(id, graphSize-1, itr[i][j]));
+				else graph.addEdge(new Edge(id, ((i) * width + (j + 1) + 1), itr[i][j]));
 
+				// If pixel isn't in the left column, add edge to bottom left pixel
+				if(i > 0) graph.addEdge(new Edge(id, ((i - 1) * width + (j + 1) + 1), itr[i][j]));
 
+				// If pixel isn't in the left column, add edge to bottom left pixel
+				if(i < width - 1) graph.addEdge(new Edge(id, ((i + 1) * width + (j + 1) + 1), itr[i][j]));
 			}
 		}
 

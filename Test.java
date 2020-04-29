@@ -36,5 +36,12 @@ class Test
    public static void main(String[] args)
 	 {
 		//testGraph();
+		 int[][] img = {{3, 11, 24, 39},{8, 21, 29, 39},{200, 60, 25, 0}};
+
+		 int[][] itr = SeamCarving.interest(img);
+
+		 Graph g = SeamCarving.toGraph(itr);
+
+		 g. writeFile("f.txt");
 	 }
 }
