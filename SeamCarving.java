@@ -75,6 +75,11 @@ public class SeamCarving
 		return interestTable;
 	}
 
+	private static int getID(int i, int j, int width)
+	{
+		return 1 + (j * width + i);
+	}
+
 	public static Graph toGraph(int[][] itr)
 	{
 		int graphSize = itr.length * itr[0].length + 2; // Size = array size + src + dest points
@@ -87,7 +92,7 @@ public class SeamCarving
 			for(int j = 0; j < height; j++)
 			{
 				// Calculate pixel ID
-				int id = i * width + j + 1;
+				int id = getID(i, j, width);
 
 				// If pixel is top of a row, add edge from 0 to current with cost 0
 				if(j == 0) graph.addEdge(new Edge(0, id, 0));
@@ -96,13 +101,13 @@ public class SeamCarving
 				if(j == height - 1) graph.addEdge(new Edge(id, graphSize-1, itr[i][j]));
 				else
 				{
-					graph.addEdge(new Edge(id, ((i) * width + (j + 1) + 1), itr[i][j]));
+					graph.addEdge(new Edge(id, getID(i, j + 1, width), itr[i][j]));
 
 					// If pixel isn't in the left column, add edge to bottom left pixel
-					if(i > 0) graph.addEdge(new Edge(id, ((i - 1) * width + (j + 1) + 1), itr[i][j]));
+					if(i > 0) graph.addEdge(new Edge(id, getID(i - 1, j + 1, width), itr[i][j]));
 
 					// If pixel isn't in the left column, add edge to bottom left pixel
-					if(i < width - 1) graph.addEdge(new Edge(id, ((i + 1) * width + (j + 1) + 1), itr[i][j]));
+					if(i < width - 1) graph.addEdge(new Edge(id, getID(i + 1, j + 1, width), itr[i][j]));
 				}
 			}
 		}
