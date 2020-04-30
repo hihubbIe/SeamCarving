@@ -83,7 +83,12 @@ class Test
 			exit(1);
 		}
 
-		String dst = args[2];
+		String dst = "";
+		if(args.length == 3) dst = args[2];
+		else
+		{
+			dst = src.substring(0, src.indexOf(".")) + "_res.pgm";
+		}
 
 		SeamCarving.applySimCarving(src, dst, factor);
 	 }
