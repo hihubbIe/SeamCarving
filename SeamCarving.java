@@ -42,7 +42,8 @@ public class SeamCarving
 		   FileWriter fw = new FileWriter(filename);
 		   BufferedWriter bw = new BufferedWriter(fw);
 
-		   bw.write("" + image.length + " " + image[0].length + "\n");
+		   bw.write("P2\n");
+		   bw.write("" + image[0].length + " " + image.length + "\n");
 		   bw.write("255\n");
 
 		   for(int i = 0; i < image.length; i++)
@@ -114,9 +115,10 @@ public class SeamCarving
 		return graph;
 	}
 
-	public static int[][] bellman_Ford_Complete(GraphArrayList g, int source) {
-   		int numberVertices = g.vertices();
-   		// two int arrays are returned
+	// returns an array of vertices id being the costless path from vertex s to vertex t
+	public static int[] bellman_Ford(GraphArrayList g, int s, int t) {
+		int numberVertices = g.vertices();
+
 		int[] totalDistance = new int[numberVertices]; // the total cost from source to the vertex
 		int[] father = new int[numberVertices]; // the predecessor of the vertex
 
@@ -125,10 +127,11 @@ public class SeamCarving
 			totalDistance[i] = -1;
 			father[i] = -1;
 		}
-		totalDistance[source] = 0; // the distance from source to source is zero
+		totalDistance[s] = 0; // the distance from source to source is zero
 
 		// The loop where all edges are relaxed :
 		for (int i = 1; i < numberVertices - 1; i++) { // we do |V| - 1 iterations
+			//System.out.println("iter " + i + "/" + numberVertices);
 			for (Edge e : g.edges()) { // for every edge
 				if(!(totalDistance[e.to] == -1 && totalDistance[e.from] == -1)) { // we only check the edges having a path to the origin
 					if (totalDistance[e.to] == -1 || totalDistance[e.to] > totalDistance[e.from] + e.cost) { // if the vertex destination is not treated or there is a costless path :
@@ -140,28 +143,20 @@ public class SeamCarving
 			}
 		}
 
-		/* There is no need to check for negative-weight loops in the context of this software
-		 as the given graph should be made of edges with absolute values as costs */
-
-		int[][] arrays = new int[2][numberVertices];
-		arrays[0] = totalDistance;
-		arrays[1] = father;
-
-		return arrays;
-	}
-
-	public static int[] bellman_Ford(GraphArrayList g, int s, int t) {
-   		// returns an array of vertices being the costless path from vertex s to vertex t
-		int[][] bellmanFordResult = bellman_Ford_Complete(g, s);
+		// Gathering the consecutives fathers from t to the source
 		ArrayList<Integer> path = new ArrayList<>();
-		while (bellmanFordResult[1][t] != s) {
-			path.add(bellmanFordResult[1][t]);
-			t = bellmanFordResult[1][t];
+		while (father[t] != s) {
+			path.add(father[t]);
+			t = father[t];
 		}
+
+		// Putting them in an array
 		int[] result = new int[path.size()];
 		for (int i = 0; i < path.size(); i++) {
 			result[i] = path.get(i);
 		}
+
+		// The result is an array of vertices representing the path to delete in the image
 		return result;
 	}
 }

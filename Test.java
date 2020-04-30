@@ -34,26 +34,42 @@ class Test
 		visite = new boolean[n*n+2];
 		dfs(g, 3);
 	 }
+
+	 // darkens the path in the image to visualize it
+	public static int[][] dark_path(int[][] source, int[] path)
+	{
+		int[][] result = source;
+   		int pixelID;
+   		int x, y;
+		for (int i = 0; i < path.length; i++) {
+			pixelID = path[i];
+			x = pixelID / source[0].length;
+			y = pixelID % source[0].length;
+			result[x][y] = 0; // either white or dark, need to check
+		}
+		return result;
+	}
    
    public static void main(String[] args)
 	 {
 		 //testGraph();
-		 //int[][] img = SeamCarving.readpgm("resources/ex1.pgm");
+		 int[][] img = SeamCarving.readpgm("resources/vampire.pgm");
 
-		 //int[][] itr = SeamCarving.interest(img);
-		 int[][] img = {{3,11,24,39},{8,21,29,39},{200, 60, 25, 0}};
-		 int[][] itr = SeamCarving.interest(img);
+		 for (int i = 0; i < 10; i++) {
+			 int[][] itr = SeamCarving.interest(img);
 
-		 long ms = currentTimeMillis();
+			 //long ms = currentTimeMillis();
+			 GraphArrayList g = SeamCarving.toGraph(itr);
+			 //System.out.println(currentTimeMillis() - ms + "ms");
 
-		 GraphArrayList g = SeamCarving.toGraph(itr);
+			 long ms = currentTimeMillis();
+			 int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
+			 System.out.println(currentTimeMillis() - ms + "ms");
 
-		 System.out.println(currentTimeMillis() - ms + "ms");
-
-		 int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
-		 for (int i = plusCourtChemin.length - 1; i >= 0; i--) {
-			 if (i > 0) System.out.print(plusCourtChemin[i] + "->");
-			 else System.out.print(plusCourtChemin[i]);
+			 img = dark_path(img, plusCourtChemin);
 		 }
+
+		 SeamCarving.writepgm(img, "resources/vampire_result.pgm");
+
 	 }
 }
