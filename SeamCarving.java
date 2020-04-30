@@ -80,7 +80,7 @@ public class SeamCarving
 		return 1 + (j * width + i);
 	}
 
-	public static Graph toGraph(int[][] itr)
+	public static GraphArrayList toGraph(int[][] itr)
 	{
 		int graphSize = itr.length * itr[0].length + 2; // Size = array size + src + dest points
 		int height = itr.length;
@@ -112,5 +112,56 @@ public class SeamCarving
 		}
 
 		return graph;
+	}
+
+	public static int[][] bellman_Ford_Complete(GraphArrayList g, int source) {
+   		int numberVertices = g.vertices();
+   		// two int arrays are returned
+		int[] totalDistance = new int[numberVertices]; // the total cost from source to the vertex
+		int[] father = new int[numberVertices]; // the predecessor of the vertex
+
+		// Initializing arrays with negative values because nothing has been done yet :
+		for (int i = 0; i < numberVertices; i++) {
+			totalDistance[i] = -1;
+			father[i] = -1;
+		}
+		totalDistance[source] = 0; // the distance from source to source is zero
+
+		// The loop where all edges are relaxed :
+		for (int i = 1; i < numberVertices - 1; i++) { // we do |V| - 1 iterations
+			for (Edge e : g.edges()) { // for every edge
+				if(!(totalDistance[e.to] == -1 && totalDistance[e.from] == -1)) { // we only check the edges having a path to the origin
+					if (totalDistance[e.to] == -1 || totalDistance[e.to] > totalDistance[e.from] + e.cost) { // if the vertex destination is not treated or there is a costless path :
+						// Relaxing the edge :
+						totalDistance[e.to] = totalDistance[e.from] + e.cost;
+						father[e.to] = e.from;
+					}
+				}
+			}
+		}
+
+		/* There is no need to check for negative-weight loops in the context of this software
+		 as the given graph should be made of edges with absolute values as costs */
+
+		int[][] arrays = new int[2][numberVertices];
+		arrays[0] = totalDistance;
+		arrays[1] = father;
+
+		return arrays;
+	}
+
+	public static int[] bellman_Ford(GraphArrayList g, int s, int t) {
+   		// returns an array of vertices being the costless path from vertex s to vertex t
+		int[][] bellmanFordResult = bellman_Ford_Complete(g, s);
+		ArrayList<Integer> path = new ArrayList<>();
+		while (bellmanFordResult[1][t] != s) {
+			path.add(bellmanFordResult[1][t]);
+			t = bellmanFordResult[1][t];
+		}
+		int[] result = new int[path.size()];
+		for (int i = 0; i < path.size(); i++) {
+			result[i] = path.get(i);
+		}
+		return result;
 	}
 }

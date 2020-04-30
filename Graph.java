@@ -3,7 +3,6 @@ import java.io.*;
 public interface Graph
 {
    public int vertices();
-   
 
    public Iterable<Edge> next(int v);
    public Iterable<Edge> prev(int v);

@@ -37,15 +37,23 @@ class Test
    
    public static void main(String[] args)
 	 {
-		//testGraph();
-		 int[][] img = SeamCarving.readpgm("resources/ex1.pgm");
+		 //testGraph();
+		 //int[][] img = SeamCarving.readpgm("resources/ex1.pgm");
 
+		 //int[][] itr = SeamCarving.interest(img);
+		 int[][] img = {{3,11,24,39},{8,21,29,39},{200, 60, 25, 0}};
 		 int[][] itr = SeamCarving.interest(img);
 
 		 long ms = currentTimeMillis();
 
-		 Graph g = SeamCarving.toGraph(itr);
+		 GraphArrayList g = SeamCarving.toGraph(itr);
 
 		 System.out.println(currentTimeMillis() - ms + "ms");
+
+		 int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
+		 for (int i = plusCourtChemin.length - 1; i >= 0; i--) {
+			 if (i > 0) System.out.print(plusCourtChemin[i] + "->");
+			 else System.out.print(plusCourtChemin[i]);
+		 }
 	 }
 }
