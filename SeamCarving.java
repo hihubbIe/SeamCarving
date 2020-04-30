@@ -166,12 +166,16 @@ public class SeamCarving
 	public static int[][] truncate(int[][] image, int[] path)
 	{
 		int[][] result = new int[image.length][image[0].length - 1];
-		for (int i = 0; i < path.length; i++) {
-			int pID = path[i];
-			int x = pID / image[0].length;
-			int y = pID % image[0].length;
-			for(int px = 0; px < x; px++) result[px][y] = image[px][y];
-			for(int px = x + 1; x < image[0].length; px++) result[px - 1][y] = image[px][y];
+		for (int i = 0; i < path.length; i++)
+		{
+			int pID = path[i] - 1;
+
+			int y = pID / image[0].length;
+			int x = pID % image[0].length;
+
+			for(int px = 0; px < x; px++) result[y][px] = image[y][px];
+
+			for(int px = x + 1; px < image[0].length; px++) result[y][px - 1] = image[y][px];
 		}
 		return result;
 	}

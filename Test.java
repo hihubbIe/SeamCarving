@@ -53,7 +53,7 @@ class Test
    public static void main(String[] args)
 	 {
 		 //testGraph();
-		 int[][] img = SeamCarving.readpgm("resources/ex1.pgm");
+		 int[][] img = SeamCarving.readpgm("resources/ex2.pgm");
 
 		 int reduction = 100; // the number of times we reduce the image
 		 for (int i = 0; i < reduction; i++) {
@@ -73,7 +73,7 @@ class Test
 			 //img = dark_path(img, plusCourtChemin);
 		 }
 		 // write the final image
-		 SeamCarving.writepgm(img, "ex1_result.pgm");
+		 SeamCarving.writepgm(img, "ex2_result.pgm");
 
 	 }
 }
