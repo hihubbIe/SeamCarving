@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.io.*;
 import java.util.*;
+
+import static java.lang.System.currentTimeMillis;
+
 public class SeamCarving
 {
 
@@ -178,5 +181,41 @@ public class SeamCarving
 			for(int px = x + 1; px < image[0].length; px++) result[y][px - 1] = image[y][px];
 		}
 		return result;
+	}
+
+	public static boolean applySimCarving(String src, String dst, int factor)
+	{
+		try
+		{
+			int[][] img = SeamCarving.readpgm(src);
+
+			for (int i = 0; i < factor; i++)
+			{
+				// calculate the interest matrix
+				int[][] itr = SeamCarving.interest(img);
+
+				// convert it into a graph
+				GraphArrayList g = SeamCarving.toGraph(itr);
+
+				// determine the costless path from top to bottom
+				//long ms = currentTimeMillis();
+
+				int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
+
+				// remove the calculated path from the image
+				img = SeamCarving.truncate(img, plusCourtChemin);
+
+				//System.out.println(currentTimeMillis() - ms + "ms");
+			}
+			// write the final image
+			SeamCarving.writepgm(img, dst);
+
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getStackTrace());
+			return false;
+		}
+		return true;
 	}
 }

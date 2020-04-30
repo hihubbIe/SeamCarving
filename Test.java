@@ -1,4 +1,5 @@
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.exit;
 
 class Test
 {
@@ -52,28 +53,38 @@ class Test
    
    public static void main(String[] args)
 	 {
-		 //testGraph();
-		 int[][] img = SeamCarving.readpgm("resources/ex2.pgm");
+		if(args.length == 0) // No argument passed, print help
+		{
+			System.out.println("Use : <src_image> <factor> <(optional)dst_image>");
+			System.out.println("Accepted image formats : .pgm");
+			System.out.println("<factor> must be less than <src_img> width");
+			exit(1);
+		}
+		else if(args.length == 1) // too few arguments
+		{
+			System.out.println("Too few arguments");
+			exit(1);
+		}
+		else if(args.length > 3) // too much arguments
+		{
+			System.out.println("Too many arguments");
+			exit(1);
+		}
 
-		 int reduction = 100; // the number of times we reduce the image
-		 for (int i = 0; i < reduction; i++) {
-		 	 // calculate the interest matrix
-			 int[][] itr = SeamCarving.interest(img);
-			 // convert it into a graph
-			 GraphArrayList g = SeamCarving.toGraph(itr);
-			 // determine the costless path from top to bottom
-			 long ms = currentTimeMillis();
-			 int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
+		String src = args[0];
 
-			 // remove the calculated path from the image
-			 img = SeamCarving.truncate(img, plusCourtChemin);
+		int factor = 0;
+		try {
+			factor = Integer.parseInt(args[1]);
+		}
+		catch(Exception e)
+		{
+			System.out.println("<factor> parameter of value " + args[1] + " is not a valid number !");
+			exit(1);
+		}
 
-			 System.out.println(currentTimeMillis() - ms + "ms");
-			 // update the image with shortest path trace
-			 //img = dark_path(img, plusCourtChemin);
-		 }
-		 // write the final image
-		 SeamCarving.writepgm(img, "ex2_result.pgm");
+		String dst = args[2];
 
+		SeamCarving.applySimCarving(src, dst, factor);
 	 }
 }
