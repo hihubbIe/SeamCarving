@@ -45,7 +45,7 @@ class Test
 			pixelID = path[i];
 			x = pixelID / source[0].length;
 			y = pixelID % source[0].length;
-			result[x][y] = 0; // either white or dark, need to check
+			result[x][y] = 0; // set the pixel to black
 		}
 		return result;
 	}
@@ -53,23 +53,23 @@ class Test
    public static void main(String[] args)
 	 {
 		 //testGraph();
-		 int[][] img = SeamCarving.readpgm("resources/vampire.pgm");
+		 int[][] img = SeamCarving.readpgm("resources/ex1.pgm");
 
-		 for (int i = 0; i < 10; i++) {
+		 int reduction = 100; // the number of times we reduce the image
+		 for (int i = 0; i < reduction; i++) {
+		 	 // calculate the interest matrix
 			 int[][] itr = SeamCarving.interest(img);
-
-			 //long ms = currentTimeMillis();
+			 // convert it into a graph
 			 GraphArrayList g = SeamCarving.toGraph(itr);
-			 //System.out.println(currentTimeMillis() - ms + "ms");
-
+			 // determine the costless path from top to bottom
 			 long ms = currentTimeMillis();
 			 int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
 			 System.out.println(currentTimeMillis() - ms + "ms");
-
+			 // update the image with shortest path trace
 			 img = dark_path(img, plusCourtChemin);
 		 }
-
-		 SeamCarving.writepgm(img, "resources/vampire_result.pgm");
+		 // write the final image
+		 SeamCarving.writepgm(img, "resources/ex1_result.pgm");
 
 	 }
 }

@@ -129,15 +129,19 @@ public class SeamCarving
 		}
 		totalDistance[s] = 0; // the distance from source to source is zero
 
+		boolean distancesUpdated = true;
 		// The loop where all edges are relaxed :
 		for (int i = 1; i < numberVertices - 1; i++) { // we do |V| - 1 iterations
-			//System.out.println("iter " + i + "/" + numberVertices);
-			for (Edge e : g.edges()) { // for every edge
-				if(!(totalDistance[e.to] == -1 && totalDistance[e.from] == -1)) { // we only check the edges having a path to the origin
-					if (totalDistance[e.to] == -1 || totalDistance[e.to] > totalDistance[e.from] + e.cost) { // if the vertex destination is not treated or there is a costless path :
-						// Relaxing the edge :
-						totalDistance[e.to] = totalDistance[e.from] + e.cost;
-						father[e.to] = e.from;
+			if (distancesUpdated) {
+				distancesUpdated = false;
+				for (Edge e : g.edges()) { // for every edge
+					if(!(totalDistance[e.to] == -1 && totalDistance[e.from] == -1)) { // we only check the edges having a path to the origin
+						if (totalDistance[e.to] == -1 || totalDistance[e.to] > totalDistance[e.from] + e.cost) { // if the vertex destination is not treated or there is a costless path :
+							// Relaxing the edge :
+							totalDistance[e.to] = totalDistance[e.from] + e.cost;
+							distancesUpdated = true;
+							father[e.to] = e.from;
+						}
 					}
 				}
 			}
