@@ -64,12 +64,16 @@ class Test
 			 // determine the costless path from top to bottom
 			 long ms = currentTimeMillis();
 			 int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
+
+			 // remove the calculated path from the image
+			 img = SeamCarving.truncate(img, plusCourtChemin);
+
 			 System.out.println(currentTimeMillis() - ms + "ms");
 			 // update the image with shortest path trace
-			 img = dark_path(img, plusCourtChemin);
+			 //img = dark_path(img, plusCourtChemin);
 		 }
 		 // write the final image
-		 SeamCarving.writepgm(img, "resources/ex1_result.pgm");
+		 SeamCarving.writepgm(img, "ex1_result.pgm");
 
 	 }
 }

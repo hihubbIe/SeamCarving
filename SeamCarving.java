@@ -111,7 +111,6 @@ public class SeamCarving
 				}
 			}
 		}
-
 		return graph;
 	}
 
@@ -161,6 +160,19 @@ public class SeamCarving
 		}
 
 		// The result is an array of vertices representing the path to delete in the image
+		return result;
+	}
+
+	public static int[][] truncate(int[][] image, int[] path)
+	{
+		int[][] result = new int[image.length][image[0].length - 1];
+		for (int i = 0; i < path.length; i++) {
+			int pID = path[i];
+			int x = pID / image[0].length;
+			int y = pID % image[0].length;
+			for(int px = 0; px < x; px++) result[px][y] = image[px][y];
+			for(int px = x + 1; x < image[0].length; px++) result[px - 1][y] = image[px][y];
+		}
 		return result;
 	}
 }
