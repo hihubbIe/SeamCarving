@@ -1,0 +1,22 @@
+Rendu DM SeamCarving par ALGLAVE Ivan & SCHNEIDER Rémi 	
+
+
+Utilisation du programme : 
+3 paramètres à rentrer pour l'éxécution : 
+1: Le chemin relatif de l'image à traiter 
+2: Le nombre de colonnes à retirer de l'image 
+3: (optionnel) Le chemin du dossier où stocker l'image résultat (par défaut, elle sera stockée dans le même dossier que l'image d'origine)
+
+
+Répartition du travail : 
+ALGLAVE Ivan : 
+- Implémentation de writepgm() 
+- Implémentation de interest()
+- Implémentation de toGraph()
+- Utilisation du retour de Bellman-Ford pour modifier l'image via la fonction truncate()
+- Gestion de l'affichage et des messages d'erreur 
+
+SCHNEIDER Rémi : 
+- Implémentation et optimisation de l'algorithme de Bellman-Ford 
+- Interprétation du retour de Bellman-Ford pour ressortir le chemin de moindre coût des données 
+
