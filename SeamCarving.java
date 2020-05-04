@@ -204,7 +204,7 @@ public class SeamCarving
 				img = SeamCarving.truncate(img, plusCourtChemin);
 
 				int pct = (int)((double)i / (double)factor * 100.0);
-				System.out.print("\r" + "Prgoression : " + pct + "%");
+				System.out.print("\r" + "Progression : " + pct + "%");
 			}
 			// write the final image
 			SeamCarving.writepgm(img, dst);
