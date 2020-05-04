@@ -256,7 +256,7 @@ public class SeamCarving
 				System.out.print("\r" + "Progression : " + pct + "%");
 			}
 			// write the final image
-			System.out.println("Saving file as " + dst);
+			System.out.println("\nSaving file as " + dst);
 			System.out.flush();
 			SeamCarving.writepgm(img, dst);
 		}
