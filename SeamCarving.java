@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.*;
 
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.setOut;
 
 public class SeamCarving
 {
@@ -38,6 +39,37 @@ public class SeamCarving
             return null;
         }
     }
+
+    public static int[][] readPGMNotAsResource(String path)
+	{
+		try {
+			InputStream f = new FileInputStream(path);
+			BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			String magic = d.readLine();
+			String line = d.readLine();
+			while (line.startsWith("#")) {
+				line = d.readLine();
+			}
+			Scanner s = new Scanner(line);
+			int width = s.nextInt();
+			int height = s.nextInt();
+			line = d.readLine();
+			s = new Scanner(line);
+			int maxVal = s.nextInt();
+			int[][] im = new int[height][width];
+			s = new Scanner(d);
+			int count = 0;
+			while (count < height*width) {
+				im[count / width][count % width] = s.nextInt();
+				count++;
+			}
+			return im;
+		}
+		catch(Throwable t) {
+			t.printStackTrace(System.err) ;
+			return null;
+		}
+	}
 
    public static void writepgm(int[][] image, String filename)
    {
@@ -188,7 +220,24 @@ public class SeamCarving
 	{
 		try
 		{
-			int[][] img = SeamCarving.readpgm(src);
+			int[][] img = null;
+
+			// If image exists as resource, try to load it
+			if(ClassLoader.getSystemClassLoader().getResourceAsStream(src) != null) SeamCarving.readpgm(src);
+			// Else load image as system file
+			else img = SeamCarving.readPGMNotAsResource(src);
+
+			// If image not loaded, abort
+			if(img == null)
+			{
+				System.out.println("ERROR - could not read / find image");
+				return false;
+			}
+			else if(factor >= img[0].length || factor < 0)
+			{
+				System.out.println("ERROR - factor > image width");
+				return false;
+			}
 
 			for (int i = 0; i < factor; i++)
 			{
@@ -207,12 +256,15 @@ public class SeamCarving
 				System.out.print("\r" + "Progression : " + pct + "%");
 			}
 			// write the final image
+			System.out.println("Saving file as " + dst);
+			System.out.flush();
 			SeamCarving.writepgm(img, dst);
-
 		}
 		catch(Exception e)
 		{
 			System.out.println(e.getStackTrace());
+			System.out.println(e.getMessage());
+			System.out.println("oui");
 			return false;
 		}
 		System.out.println("");
