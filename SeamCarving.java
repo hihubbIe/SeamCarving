@@ -215,6 +215,7 @@ public class SeamCarving
 			System.out.println(e.getStackTrace());
 			return false;
 		}
+		System.out.println("");
 		return true;
 	}
 }
