@@ -93,6 +93,6 @@ class Test
 		 long start = currentTimeMillis();
 		SeamCarving.applySimCarving(src, dst, factor);
 
-		 System.out.println("Total time : " + (currentTimeMillis() - start) + " ms");
+		 System.out.println(" Total time : " + (currentTimeMillis() - start) + " ms");
 	 }
 }
