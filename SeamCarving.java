@@ -180,6 +180,7 @@ public class SeamCarving
 
 			for(int px = x + 1; px < image[0].length; px++) result[y][px - 1] = image[y][px];
 		}
+
 		return result;
 	}
 
@@ -197,15 +198,13 @@ public class SeamCarving
 				// convert it into a graph
 				GraphArrayList g = SeamCarving.toGraph(itr);
 
-				// determine the costless path from top to bottom
-				//long ms = currentTimeMillis();
-
 				int[] plusCourtChemin = SeamCarving.bellman_Ford(g, 0, g.vertices() - 1);
 
 				// remove the calculated path from the image
 				img = SeamCarving.truncate(img, plusCourtChemin);
 
-				//System.out.println(currentTimeMillis() - ms + "ms");
+				int pct = (int)((double)i / (double)factor * 100.0);
+				System.out.print("\r" + "Prgoression : " + pct + "%");
 			}
 			// write the final image
 			SeamCarving.writepgm(img, dst);

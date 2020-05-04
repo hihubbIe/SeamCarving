@@ -90,6 +90,9 @@ class Test
 			dst = src.substring(0, src.indexOf(".")) + "_res.pgm";
 		}
 
+		 long start = currentTimeMillis();
 		SeamCarving.applySimCarving(src, dst, factor);
+
+		 System.out.println("Total time : " + (currentTimeMillis() - start) + " ms");
 	 }
 }
