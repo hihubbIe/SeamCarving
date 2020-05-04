@@ -17,6 +17,7 @@ ALGLAVE Ivan :
 - Gestion de l'affichage et des messages d'erreur 
 
 SCHNEIDER Rémi : 
+- Correction de writepgm() qui n'écrivait pas correctement l'entête du fichier
 - Implémentation et optimisation de l'algorithme de Bellman-Ford 
 - Interprétation du retour de Bellman-Ford pour ressortir le chemin de moindre coût des données 
 
