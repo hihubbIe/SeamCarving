@@ -87,7 +87,7 @@ class Test
 		if(args.length == 3) dst = args[2];
 		else
 		{
-			dst = src.substring(0, src.indexOf(".")) + "_res.pgm";
+			dst = src.substring(0, src.lastIndexOf('.')) + "_res.pgm";
 		}
 
 		 long start = currentTimeMillis();
